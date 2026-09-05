@@ -1,21 +1,123 @@
+now Replication stop:
+
+connect to oracle user:
+
+Then connect to sqlplus:
+
+sqlplus / as sysdba
+
+now stop MRP:
+
+ALTER DATABASE RECOVER MANAGED STANDBY DATABASE CANCEL;
+
+and shut down database:
+
+shutdown immediate;
+
+and exit sqlplus .
+
+Switch root user:
+
+sudo su - root
+
 OCI DATABASE STOP:
 
-ps -ef | grep d.bin
+ps -ef | grep d.bin        Check porcess:
 
-/u01/app/19.0.0.0/grid/bin 
+output:
 
+root      22458      1  0 04:41 ?        00:00:42 /u01/app/19.0.0.0/grid/bin/ohasd.bin reboot
+root      32885      1  0 04:42 ?        00:00:18 /u01/app/19.0.0.0/grid/bin/orarootagent.bin
+grid      33212      1  0 04:42 ?        00:00:25 /u01/app/19.0.0.0/grid/bin/oraagent.bin
+grid      33297      1  0 04:42 ?        00:00:09 /u01/app/19.0.0.0/grid/bin/mdnsd.bin
+grid      33299      1  0 04:42 ?        00:00:55 /u01/app/19.0.0.0/grid/bin/evmd.bin
+grid      33509      1  0 04:42 ?        00:00:10 /u01/app/19.0.0.0/grid/bin/gpnpd.bin
+grid      33741  33299  0 04:42 ?        00:00:09 /u01/app/19.0.0.0/grid/bin/evmlogger.bin -o /u01/app/19.0.0.0/grid/log/[HOSTNAME]/evmd/evmlogger.info -l /u01/app/19.0.0.0/grid/log/[HOSTNAME]/evmd/evmlogger.log
+grid      33754      1  0 04:42 ?        00:00:42 /u01/app/19.0.0.0/grid/bin/gipcd.bin
+root      46078      1  0 04:42 ?        00:00:13 /u01/app/19.0.0.0/grid/bin/cssdmonitor
+root      46090      1  1 04:42 ?        00:02:36 /u01/app/19.0.0.0/grid/bin/osysmond.bin
+root      46284      1  0 04:42 ?        00:00:14 /u01/app/19.0.0.0/grid/bin/cssdagent
+grid      46310      1  0 04:42 ?        00:00:36 /u01/app/19.0.0.0/grid/bin/diskmon -d -f
+grid      46488      1  0 04:42 ?        00:01:13 /u01/app/19.0.0.0/grid/bin/ocssd.bin  -S 1
+root      49686      1  1 04:43 ?        00:01:22 /u01/app/19.0.0.0/grid/bin/octssd.bin reboot
+root      56234      1  0 04:43 ?        00:01:16 /u01/app/19.0.0.0/grid/bin/crsd.bin reboot
+root      57047      1  0 04:43 ?        00:01:08 /u01/app/19.0.0.0/grid/bin/orarootagent.bin
+grid      57094      1  0 04:43 ?        00:00:40 /u01/app/19.0.0.0/grid/bin/oraagent.bin
+grid      57718      1  0 04:43 ?        00:00:00 /u01/app/19.0.0.0/grid/bin/tnslsnr ASMNET1LSNR_ASM -no_crs_notify -inherit
+grid      58095      1  0 04:43 ?        00:00:00 /u01/app/19.0.0.0/grid/bin/tnslsnr LISTENER -no_crs_notify -inherit
+oracle    77826  77710  0 06:53 pts/0    00:00:00 grep --color=auto d.bin
+grid     153867      1  0 04:58 ?        00:00:09 /u01/app/19.0.0.0/grid/bin/scriptagent.bin
+grid     154495      1  0 04:58 ?        00:00:00 /u01/app/19.0.0.0/grid/bin/tnslsnr LISTENER_SCAN2 -no_crs_notify -inherit
+grid     154533      1  0 04:58 ?        00:00:00 /u01/app/19.0.0.0/grid/bin/tnslsnr LISTENER_SCAN3 -no_crs_notify -inherit
+root     173498      1  0 04:59 ?        00:00:16 /u01/app/19.0.0.0/grid/bin/ologgerd -M
+oracle   325562      1  0 06:29 ?        00:00:02 /u01/app/19.0.0.0/grid/bin/oraagent.bin
+
+Now change dir 
+cd /u01/app/19.0.0.0/grid/bin 
+
+output:
+CommonSetup.pm        aqxmlctl          cssvfupgd            evmshow.bin             lcsscan          ocrconfig       oputil             rawutl0
+acfscm                aqxmlctl.pl       cssvfupgd.bin        evmsort                 ldapadd          ocrconfig.bin   opwdintg.exe       rconfig
+acfsdriverstate       asmca             cursize              evmsort.bin             ldapaddmt        ocrdump         oraagent           rdtool
+acfshanfs             asmcmd            dbca                 evmwatch                ldapbind         ocrdump.bin     oraagent.bin       relink
+acfsiob               asmcmdcore        dbdowngrade          evmwatch.bin            ldapcompare      ocrpatch        orabase            renamedg
+acfsload              asmproxy          dbfs_client          evt.sh                  ldapdelete       ocssd           orabaseconfig      rhpctl
+acfsrd                bdschecksw        dbfsize              exp                     ldapmoddn        ocssd.bin       orabasehome        rhpplsnr
+acfsregistrymount     bndlchk           dbgeu_run_action.pl  expdp                   ldapmodify       ocssdrim        oracle             rhpplsnr.pl
+acfsremote            cdpc              dbhome               extjob                  ldapmodifymt     ocssdrim.bin    oracsswd           rhpplsnr_lib.pm
+acfsrepl_apply        cdpc.bin          dbnest               extjobo                 ldapsearch       octssd          oracsswd.bin       rhpplsnrctl
+acfsrepl_apply.bin    cdpcfg            dbnestinit           extproc                 ldifmigrator     octssd.bin      oradaemonagent     rhprepos
+acfsrepl_dupd         cdpcfg.pl         dbreload             extusrupgrade           linkshlib        odig            oradism            rman
+acfsrepl_dupd.bin     cemutlo           dbshut               fmputl                  lmsgen           odig.bin        oradnfs            roohctl
+acfsrepl_initializer  cemutlo.bin       dbstart              fmputlhp                loadjava         odisrvreg       oradnfs_run.sh     rootPreRequired.sh
+acfsrepl_monitor      cemutls           dbua                 genagtsh                loadpsp          odnsd           oradnssd           runcluvfy.pl
+acfsrepl_preapply     cemu
+
+
+Now check CRS - Cluster Ready Services are running properly on a node.
 ./crsctl check crs
 
+output:
+
+CRS-4638: Oracle High Availability Services is online
+CRS-4537: Cluster Ready Services is online
+CRS-4529: Cluster Synchronization Services is online
+CRS-4533: Event Manager is online
+
+stop the entire Oracle Clusterware stack on all nodes of the cluster.
 ./crsctl stop cluster -all
 
+
+stop Oracle Clusterware (CRS stack) on the local node only,
 ./crsctl stop crs -f
 
 OCI DATABASE START:
 
 ps -ef | grep d.bin
 
-/u01/app/19.0.0.0/grid/bin
+cd /u01/app/19.0.0.0/grid/bin
 
 ./crsctl start crs -wait
 
 ./crsctl check crs
+
+ and start in OCI Replication:
+
+connect user oracle:
+sudo su - oracle
+
+now check listner is up or not:
+lsnrctl status
+
+after check listner up now start database as mount:
+startup mount;
+
+after that start MRP:
+ALTER DATABASE RECOVER MANAGED STANDBY DATABASE USING CURRENT LOGFILE DISCONNECT FROM SESSION;
+
+Now check status of LOGs:
+select process, status, sequence# from v$managed_standby;
+
+it show applying log means MRP start properly.
+
+
