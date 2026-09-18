@@ -1,0 +1,18 @@
+connect to database :
+. ./DGPREPRD.env
+
+sqlplus / asysdba
+
+show parameter dbuniq
+
+NAME                                 TYPE        VALUE
+------------------------------------ ----------- ------------------------------
+db_unique_name                       string      dgpreprd
+
+exit
+
+now check database running on nodes:
+srvctl status database -d dgpreprd
+
+Stop oci database :
+srvctl stop database -d dgpreprd
