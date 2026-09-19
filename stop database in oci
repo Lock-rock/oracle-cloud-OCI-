@@ -16,3 +16,8 @@ srvctl status database -d dgpreprd
 
 Stop oci database :
 srvctl stop database -d dgpreprd
+
+
+check status in grid :
+
+crsctl status res -t
